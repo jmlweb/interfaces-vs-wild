@@ -1,0 +1,73 @@
+---
+import castArray from '@/utils/castArray';
+
+interface NavigationItem {
+  title: string;
+  href: string;
+}
+
+export interface Props {
+  navigation?: NavigationItem | NavigationItem[];
+  links?: {
+    title: string;
+    href: string;
+  }[];
+}
+
+const { navigation } = Astro.props;
+const links = navigation ? castArray(navigation) : navigation;
+---
+
+<article class="article">
+  <slot />
+
+  {
+    links && (
+      <nav class="navigation">
+        {links.map((link) => (
+          <a class="goto" href={link.href}>
+            {link.title}
+          </a>
+        ))}
+      </nav>
+    )
+  }
+</article>
+
+<style>
+  .article {
+    font-weight: 360;
+  }
+
+  .article :global(p),
+  .article :global(nav) {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .article :global(p code) {
+    color: #EB455F;
+    font-weight: 500;
+  }
+
+  .article :global(.astro-code) {
+    font-size: 1.4rem;
+    line-height: 1.35;
+    padding: 0 2rem;
+  }
+
+  .article :global(a) {
+    font-weight: 600;
+    color: var(--blue);
+    text-decoration: underline;
+  }
+
+  .navigation {
+    padding-top: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+</style>

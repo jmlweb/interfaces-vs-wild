@@ -1,0 +1,38 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  href: '/immutability',
+  title: 'Immutability'
+}
+---
+
+<SlideLayout title="Pure functions" subtitle="Converting to a pure function">
+  <Article navigation={NAVIGATION}>
+    <p>Extracting side-effects out of the function facilitates testing</p>
+    <Code lang="ts" theme="material-palenight" wrap code={`
+export const isOfficeTime = (currentHour: number) => {
+  return currentHour > 10 && currentHour < 20;
+};
+
+// Isolated side effects. Native function, no need to test it
+const mustCall = isOfficeTime(new Date().getHours());
+    `} />
+    <p>Just pass the intended value</p>
+    <Code lang="ts" theme="material-palenight" wrap code={`
+import { isOfficeTime } from './app';
+
+it('must return true for 11', () => {
+  expect(isOfficeTime(11)).toBe(true);
+});
+
+it('must return false for 22', () => {
+  expect(isOfficeTime(22)).toBe(false);
+});
+    `}>
+
+    </Code>
+  </Article>
+</SlideLayout>

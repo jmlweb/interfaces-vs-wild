@@ -1,0 +1,65 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Encapsulation',
+  href: '/encapsulation',
+};
+---
+
+<SlideLayout title="Higher Order Functions" subtitle="Second example">
+  <Article navigation={NAVIGATION}>
+    <p>Let's create now a simple filter/paginator.</p>
+    <p>
+      In this case the function arguments are wrapped by an object, and it returns another function
+    </p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+type FilterFn<T> = (x: T) => boolean;
+type TransformFn<T, R> = (x: T) => R;
+
+interface Options<T, R> {
+  offset: number;
+  limit: number;
+  filterFn: FilterFn<T>;
+  transformFn: TransformFn<T, R>;
+}
+
+const makeFilter =
+  <T, R>({ offset, limit, filterFn, transformFn }: Options<T, R>) =>
+  (data: T[]): R[] => {
+    const filteredItems = data.filter(filterFn);
+    const paginatedItems = filteredItems.slice(offset, offset + limit);
+    return paginatedItems.map(transformFn);
+  };
+
+interface Data {
+  id: number;
+  name: string;
+  href: string;
+  isEnabled: boolean;
+}
+
+const homePageFilter = makeFilter({
+  offset: 0,
+  limit: 12,
+  filterFn: (x: { isEnabled: boolean }) => x.isEnabled,
+  transformFn: ({ id, name, href }: Data) => ({
+    id,
+    name,
+    href,
+  }),
+});
+
+const rawData = await service.get('/api/data');
+
+const data = homePageFilter(rawData);
+    `}
+    />
+  </Article>
+</SlideLayout>

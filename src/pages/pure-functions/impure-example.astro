@@ -1,0 +1,31 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Converting to pure function',
+  href: '/pure-functions/pure-example',
+};
+---
+
+<SlideLayout title="Pure functions" subtitle="Example of an impure function">
+  <Article navigation={NAVIGATION}>
+    <p>To test this function, we would need to mock the Date object</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+const currentHour = new Date().getHours();
+
+const isOfficeTime = () => {
+  // without context, it is impossible to know the value of currentHour
+  return currentHour > 10 && currentHour < 20;
+};
+
+const mustCall = isOfficeTime();
+    `}
+    />
+  </Article>
+</SlideLayout>

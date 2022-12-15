@@ -1,0 +1,60 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'What is composition?',
+  href: '/composition/composition-example',
+};
+---
+
+<SlideLayout
+  title="Composition"
+  subtitle="What is inheritance?"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>A <code>class</code> can extend from another <code>class</code> and can access its methods and properties.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+class Person {
+  #name: string;
+
+  constructor(name: string) {
+    this.#name = name;
+  }
+
+  get name() {
+    return this.#name;
+  }
+}
+
+class Employee extends Person {
+  #position: string;
+
+  constructor(name: string, position: string) {
+    super(name);
+    this.#position = position;
+  }
+
+  get name() {
+    return super.name;
+  }
+
+  get position() {
+    return this.#position;
+  }
+}
+
+const me = new Employee('jmlucas', 'Frontend Developer');
+me.name; // jmlucas
+me.position; // Frontend Developer
+    `}
+    />
+  </Article>
+</SlideLayout>

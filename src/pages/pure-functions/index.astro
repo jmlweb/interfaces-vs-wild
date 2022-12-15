@@ -1,0 +1,22 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+
+const NAVIGATION = {
+  title: 'Example of an impure function',
+  href: '/pure-functions/impure-example',
+};
+---
+
+<SlideLayout
+  title="Pure functions"
+  subtitle="Same input always produces same output"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>Any needed data is passed as argument (constants are an exception).</p>
+    <p>The arguments are never altered.</p>
+    <p>Easier to test. No need for mocks.</p>
+  </Article>
+</SlideLayout>

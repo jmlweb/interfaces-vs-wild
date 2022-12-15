@@ -1,0 +1,164 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Function piping',
+  href: '/function-piping',
+};
+---
+
+<SlideLayout title="Composition" subtitle="Composing functions">
+  <Article navigation={NAVIGATION}>
+    <p>
+      Let's say we have a list of owners and their houses. We want to sort the owners by the total area of their houses.
+    </p>
+    <p>
+      For each owner we also want to sort their houses by area.
+    </p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+interface House {
+  name: string;
+  dimensions: {
+    width: number;
+    length: number;
+  };
+}
+
+interface Owner {
+  name: string;
+  houses: House[];
+}
+
+// non-mutating sort version
+const sort = <T>(list: ReadonlyArray<T>, fn: (a: T, b: T) => number) => [...list].sort(fn);
+
+const getHouseArea = ({ dimensions }: House) => dimensions.width * dimensions.length;
+
+const sortHousesByArea = (houses: ReadonlyArray<House>) => {
+  return sort(houses, (a, b) => getHouseArea(b) - getHouseArea(a));
+};
+
+const getOwnerTotalArea = ({ houses }: Owner) => {
+  return houses.reduce((acc, house) => {
+    return acc + getHouseArea(house);
+  }, 0);
+};
+
+const sortOwnersByHouseArea = (owners: ReadonlyArray<Owner>) => {
+
+  return sort(owners, (a, b) => {
+    return getOwnerTotalArea(b) - getOwnerTotalArea(a);
+  });
+};
+
+const sortOwnersHousesByArea = (owners: ReadonlyArray<Owner>) => {
+  return owners.map((owner) => ({
+    ...owner,
+    houses: sortHousesByArea(owner.houses),
+  }));
+};
+
+const owners: ReadonlyArray<Owner> = [
+  // ...
+];
+
+const result = sortOwnersByHouseArea(sortOwnersHousesByArea(owners));
+      `}
+    />
+  </Article>
+</SlideLayout>
+
+<script>
+interface House {
+  name: string;
+  dimensions: {
+    width: number;
+    length: number;
+  };
+}
+
+interface Owner {
+  name: string;
+  houses: ReadonlyArray<House>;
+}
+
+// non-mutating sort version
+const sort = <T>(list: ReadonlyArray<T>, fn: (a: T, b: T) => number) => [...list].sort(fn);
+
+const getHouseArea = ({ dimensions }: House) => dimensions.width * dimensions.length;
+
+const sortHousesByArea = (houses: ReadonlyArray<House>) => {
+  return sort(houses, (a, b) => getHouseArea(b) - getHouseArea(a));
+};
+
+const getOwnerTotalArea = ({ houses }: Owner) => {
+  return houses.reduce((acc, house) => {
+    return acc + getHouseArea(house);
+  }, 0);
+};
+
+const sortOwnersByHouseArea = (owners: ReadonlyArray<Owner>) => {
+
+  return sort(owners, (a, b) => {
+    return getOwnerTotalArea(b) - getOwnerTotalArea(a);
+  });
+};
+
+const sortOwnersHousesByArea = (owners: ReadonlyArray<Owner>) => {
+  return owners.map((owner) => ({
+    ...owner,
+    houses: sortHousesByArea(owner.houses),
+  }));
+};
+
+const owners: ReadonlyArray<Owner> = [
+  {
+    name: 'John',
+    houses: [
+      {
+        name: 'House 1',
+        dimensions: {
+          width: 10,
+          length: 10,
+        },
+      },
+      {
+        name: 'House 2',
+        dimensions: {
+          width: 20,
+          length: 20,
+        },
+      },
+    ],
+  },
+  {
+    name: 'Jane',
+    houses: [
+      {
+        name: 'House 3',
+        dimensions: {
+          width: 30,
+          length: 30,
+        },
+      },
+      {
+        name: 'House 4',
+        dimensions: {
+          width: 40,
+          length: 40,
+        },
+      },
+    ],
+  },
+];
+
+const result = sortOwnersByHouseArea(sortOwnersHousesByArea(owners));
+
+console.log(result);
+</script>

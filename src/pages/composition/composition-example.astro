@@ -1,0 +1,40 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Composing functions',
+  href: '/composition/composing-functions',
+};
+---
+
+<SlideLayout
+  title="Composition"
+  subtitle="What is composition?"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>A simpler alternative is using function composition.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+const makePerson = (name: string) => ({
+  getName: () => name,
+});
+
+const makeEmployee = (name: string, position: string) => ({
+  ...makePerson(name),
+  getPosition: () => position,
+});
+
+const me = makeEmployee('jmlucas', 'Frontend Developer');
+me.getName(); // 'jmlucas'
+me.getPosition(); // 'Frontend Developer'
+    `}
+    />
+  </Article>
+</SlideLayout>

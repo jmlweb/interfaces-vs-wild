@@ -1,0 +1,42 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Why do we need shallow comparison?',
+  href: '/immutability/shallow-comparison',
+};
+---
+
+<SlideLayout
+  title="Immutability"
+  subtitle="Value VS Reference"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>Arrays, Objects and Functions are compared as reference.</p>
+    <p>The rest of data types are compared as values.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+const a = 1;
+const b = 1;
+a === b; // true
+    `}
+    />
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+const a = { size: 30 };
+const b = { size: 30 };
+a === b; // false => would need a deep comparison
+    `}
+    />
+  </Article>
+</SlideLayout>

@@ -1,0 +1,33 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Preventing object mutations',
+  href: '/immutability/preventing-object-mutations',
+};
+---
+
+<SlideLayout title="Immutability" subtitle="Preventing array mutations">
+  <Article navigation={NAVIGATION}>
+    <p>Using the spread operator generates a new reference.</p>
+    <p>Using <code>ReadonlyArray</code> prevents mutations at top level.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+const reverse = <T>(arr: ReadonlyArray<T>) => [...arr].reverse();
+
+const originalArr: ReadonlyArray<number> = [1, 2, 3];
+// const wouldGiveTypeError = originalArr.reverse();
+
+const reversedArr = reverse(originalArr);
+
+originalArr; // [1, 2, 3]
+reversedArr; // [3, 2, 1]
+    `}
+    />
+  </Article>
+</SlideLayout>

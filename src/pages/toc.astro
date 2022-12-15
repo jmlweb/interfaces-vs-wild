@@ -28,10 +28,17 @@ import Layout from '@/layouts/Layout.astro';
       >
     </Heading>
   </header>
-  <div class="img-holder">
-    <img src="/photo.jpg" alt="Man vs Wild protagonist" />
-    <a class="link" href="/toc">Let's go!!!</a>
-  </div>
+  <ol class="list">
+    {
+      NAV_ITEMS.map((item) => (
+        <li class="list__item">
+          <a class="list__link" href={item.href}>
+            {item.title}
+          </a>
+        </li>
+      ))
+    }
+  </ol>
 </Layout>
 
 <style>
@@ -62,30 +69,28 @@ import Layout from '@/layouts/Layout.astro';
     color: var(--dark-blue);
   }
 
-  .img-holder {
-    position: relative;
+  .list {
+    list-style: decimal-leading-zero inside;
+    font-size: 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    grid-gap: 1rem;
+    margin-bottom: 2rem;
   }
 
-  img {
-    display: block;
+  .list__item {
+    color: var(--light-gray);
   }
 
-  .link {
+  .list__link {
     color: var(--blue);
     font-weight: 600;
     display: inline-block;
     padding: 1.5rem 0;
     text-decoration: underline;
-    font-size: 3rem;
-    position: absolute;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.8);
-    padding: 1rem 2rem;
   }
 
-  .link:hover {
+  .list__link:hover {
     color: var(--dark-blue);
   }
 </style>

@@ -1,0 +1,39 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Handling deep modifications',
+  href: '/immutability/handling-deep-modifications',
+};
+---
+
+<SlideLayout title="Immutability" subtitle="Preventing object mutations">
+  <Article navigation={NAVIGATION}>
+    <p>Using the spread operator generates a new reference.</p>
+    <p>Using <code>Readonly</code> prevents mutations at top level.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+interface House {
+    material: string;
+    size: number;
+};
+
+const apartment: Readonly<House> = {
+    material: 'brick',
+    size: 30
+};
+// apartment.size = 70 // this would explode
+
+const bungalow: Readonly<House> = {
+    ...apartment,
+    size: 70,
+}
+    `}
+    />
+  </Article>
+</SlideLayout>

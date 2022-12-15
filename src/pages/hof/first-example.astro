@@ -1,0 +1,52 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Second example',
+  href: '/hof/second-example',
+};
+---
+
+<SlideLayout
+  title="Higher Order Functions"
+  subtitle="First example"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>Let's create a simple replacement for try catch.</p>
+    <p>It not only receives a function as argument, but returns a new function.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+type Fn<A, R> = (...args: A[]) => R;
+
+type Result<R> = { success: true, data: R } | { success: false, error: any };
+
+const tryCatch = <A, R>(fn: Fn<A, R>) => (...args: A[]): Result<R> => {
+    try {
+        return {
+            success: true,
+            data: fn(...args)
+        };
+    } catch (e: any) {
+        return { success: false, error: e }
+    }
+};
+
+// -----------------------------------------------------
+
+const takeAge = (person: { age: number }) => person.age;
+const protectedTakeAge = tryCatch(takeAge);
+
+const unsafeData = undefined as unknown as { age: number }; 
+
+const result = protectedTakeAge(unsafeData); // it never throws
+    `}
+    />
+  </Article>
+</SlideLayout>

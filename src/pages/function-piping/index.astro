@@ -1,0 +1,157 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Function piping',
+  href: '/composition/function-piping',
+};
+---
+
+<SlideLayout title="Function piping" subtitle="Keep the flow!">
+  <Article>
+    <p>
+      Let's say we have a list of owners and their houses. We want to sort the
+      owners by the total area of their houses.
+    </p>
+    <p>For each owner we also want to sort their houses by area.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+import { contramap, reverse } from 'fp-ts/Ord';
+import { evolve } from 'fp-ts/struct';
+import { identity, pipe } from 'fp-ts/lib/function';
+import { map } from 'fp-ts/Array';
+import { sortBy } from 'fp-ts/Array';
+import * as N from 'fp-ts/number';
+
+interface House {
+  name: string;
+  dimensions: {
+    width: number;
+    length: number;
+  };
+}
+
+interface Owner {
+  name: string;
+  houses: House[];
+}
+
+const getArea = ({ dimensions }: House) =>
+  dimensions.width * dimensions.length;
+
+const getTotalArea = ({ houses }: Owner) =>
+  houses.reduce((acc, house) => acc + getArea(house), 0);
+
+const byArea = reverse(pipe(N.Ord, contramap(getArea)));
+const byTotalArea = reverse(pipe(N.Ord, contramap(getTotalArea)));
+
+const sortByArea = sortBy([byArea]);
+const sortByTotalArea = sortBy([byTotalArea]);
+
+const sortOwnersHousesByArea = (owners: Owner[]) => pipe(
+  owners,
+  map(
+    evolve({ houses: sortByArea, name: identity<string> }),
+  ),
+);
+
+const owners: ReadonlyArray<Owner> = [
+  // ...
+];
+
+const result = pipe(owners, sortOwnersHousesByArea, sortByTotalArea);
+      `}
+    />
+  </Article>
+</SlideLayout>
+
+<script>
+  import { contramap, reverse } from 'fp-ts/Ord';
+  import { evolve } from 'fp-ts/struct';
+  import { identity, pipe } from 'fp-ts/lib/function';
+  import { map } from 'fp-ts/Array';
+  import { sortBy } from 'fp-ts/Array';
+  import * as N from 'fp-ts/number';
+
+  interface House {
+    name: string;
+    dimensions: {
+      width: number;
+      length: number;
+    };
+  }
+
+  interface Owner {
+    name: string;
+    houses: House[];
+  }
+
+  const getArea = ({ dimensions }: House) =>
+    dimensions.width * dimensions.length;
+
+  const getTotalArea = ({ houses }: Owner) =>
+    houses.reduce((acc, house) => acc + getArea(house), 0);
+
+  const byArea = reverse(pipe(N.Ord, contramap(getArea)));
+  const byTotalArea = reverse(pipe(N.Ord, contramap(getTotalArea)));
+
+  const sortByArea = sortBy([byArea]);
+  const sortByTotalArea = sortBy([byTotalArea]);
+
+  const sortOwnersHousesByArea = (owners: Owner[]) => pipe(
+    owners,
+    map(
+      evolve({ houses: sortByArea, name: identity<string> }),
+    ),
+  );
+
+  const owners: Owner[] = [
+    {
+      name: 'John',
+      houses: [
+        {
+          name: 'House 1',
+          dimensions: {
+            width: 10,
+            length: 10,
+          },
+        },
+        {
+          name: 'House 2',
+          dimensions: {
+            width: 20,
+            length: 20,
+          },
+        },
+      ],
+    },
+    {
+      name: 'Jane',
+      houses: [
+        {
+          name: 'House 3',
+          dimensions: {
+            width: 30,
+            length: 30,
+          },
+        },
+        {
+          name: 'House 4',
+          dimensions: {
+            width: 40,
+            length: 40,
+          },
+        },
+      ],
+    },
+  ];
+
+  const result = pipe(owners, sortOwnersHousesByArea, sortByTotalArea);
+
+  console.log(result);
+</script>

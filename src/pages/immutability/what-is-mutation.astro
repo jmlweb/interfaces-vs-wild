@@ -1,0 +1,35 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Array mutations',
+  href: '/immutability/array-mutations',
+};
+---
+
+<SlideLayout
+  title="Immutability"
+  subtitle="What is a mutation?"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>A mutation happens when a property of an array or an object is altered.</p>
+    <p>The change is propagated along the references, probably producing unwanted side effects.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+const a = { size: 30 };
+const b = a;
+
+a.size = -1;
+
+b.size; // -1 => What happens if b is used somewhere else?
+    `}
+    />
+  </Article>
+</SlideLayout>

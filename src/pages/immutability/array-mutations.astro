@@ -1,0 +1,30 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Preventing array mutations',
+  href: '/immutability/preventing-array-mutations',
+};
+---
+
+<SlideLayout title="Immutability" subtitle="Array mutations">
+  <Article navigation={NAVIGATION}>
+    <p>We must also be aware of array mutations.</p>
+    <p>Well-known methods as <code>reverse</code> are destructive.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+const originalArr = [1, 2, 3];
+const reversedArr = originalArr.reverse();
+
+a === b; // true => 😱
+
+originalArr; // [3, 2, 1]
+    `}
+    />
+  </Article>
+</SlideLayout>

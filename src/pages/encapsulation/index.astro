@@ -1,0 +1,51 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Private Fields',
+  href: '/encapsulation/private-fields',
+};
+---
+
+<SlideLayout
+  title="Encapsulation"
+  subtitle="The false illusion of safety"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p><code>private</code> properties can be modified even on TypeScript.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+class Person {
+  private name: string;
+  private surname: string;
+  private money: number;
+
+  constructor(name: string, surname: string, money: number) {
+      this.name = name;
+      this.surname = surname;
+      this.money = money;
+  }
+
+  public getFullName(): string {
+      return \`\${this.name} \${this.surname}\`;
+  }
+
+  public getMoney(): number {
+    return this.money;
+  }
+}
+
+const person = new Person('John', 'Doe', 199);
+// person.money = 10000; // this explodes in TS
+person['money'] = 10000; // this works in TS 😱
+    `}
+    />
+  </Article>
+</SlideLayout>

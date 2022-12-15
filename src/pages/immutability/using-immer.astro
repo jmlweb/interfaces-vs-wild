@@ -1,0 +1,48 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Higher Order Functions',
+  href: '/hof',
+};
+---
+
+<SlideLayout title="Immutability" subtitle="Using immer">
+  <Article navigation={NAVIGATION}>
+    <p>Libraries like <a href="https://immerjs.github.io/immer">immer</a> can help on simplifying the transformation.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+import produce from "immer"
+
+interface House {
+    dimensions: {
+        width: number;
+        length: number;
+    };
+    material: {
+        name: string;
+        sku: Readonly<{
+            country: string;
+            code: string;
+        }>
+    };
+    rooms: string[];
+};
+
+const apartment: Readonly<House> = {
+    // ...
+};
+
+const luxuryApartmen: Readonly<House> = produce(apartment, (draft) => {
+    draft.dimensions.width = 8;
+    draft.rooms.push('Kitchen');
+});
+    `}
+    />
+  </Article>
+</SlideLayout>

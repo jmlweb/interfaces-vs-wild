@@ -1,0 +1,52 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'What is a mutation?',
+  href: '/immutability/what-is-mutation',
+};
+---
+
+<SlideLayout
+  title="Immutability"
+  subtitle="Shallow comparison"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>While deep comparison is more flexible, it has a performance cost, because it needs to compare each node of the two structures recursively.</p>
+    <p>For functions, it is not possible, and they must point to the same reference.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+import { deepEqual } from 'mylibrary';
+
+const double = (quantity: number) => quantity * 2;
+
+const a = {
+  name: 'John',
+  surname: 'Doe',
+  company: {
+    name: 'ACME',
+    address: '123 Main St',
+  },
+  double,
+};
+const b = {
+  name: 'John',
+  surname: 'Doe',
+  company: {
+    name: 'ACME',
+    address: '123 Main St',
+  },
+  double,
+};
+deepEqual(a, b); // true
+    `}
+    />
+  </Article>
+</SlideLayout>

@@ -1,0 +1,32 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'First example',
+  href: '/hof/first-example',
+};
+---
+
+<SlideLayout
+  title="Higher Order Functions"
+  subtitle="Receiving or returning functions"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>A <abbr title="Higher Order Function">HOF</abbr> receives or returns functions.</p>
+    <p>The <code>Array.map</code> method receives a function as argument and returns the transformed value.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+const double = (n: number) => n * 2;
+
+const mappedArr = [1, 2, 3, 4, 5].map(double);
+    `}
+    />
+  </Article>
+</SlideLayout>

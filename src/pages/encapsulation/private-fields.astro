@@ -1,0 +1,51 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Scoping',
+  href: '/encapsulation/scoping',
+};
+---
+
+<SlideLayout
+  title="Encapsulation"
+  subtitle="Private fields"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>Private fields are marked with <code>#</code> and they work even at runtime.</p>
+    <p>However, they generate a lot of auxiliar code and can only be use when targetting &gt; ES2015</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+class Person {
+  #name: string;
+  #surname: string;
+  #money: number;
+
+  constructor(name: string, surname: string, money: number) {
+      this.#name = name;
+      this.#surname = surname;
+      this.#money = money;
+  }
+
+  public getFullName(): string {
+      return \`\${this.#name} \${this.#surname}\`;
+  }
+
+  public getMoney(): number {
+    return this.#money;
+  }
+}
+
+const person = new Person('John', 'Doe', 199);
+// person['#money'] = 10000; // this explodes in TS and JS
+    `}
+    />
+  </Article>
+</SlideLayout>

@@ -1,5 +1,5 @@
 {
-  "name": "@example/basics",
+  "name": "interfaces-vs-wild",
   "type": "module",
   "version": "0.0.1",
   "private": true,
@@ -11,6 +11,11 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^1.6.15"
+    "astro": "^1.6.15",
+    "fp-ts": "^2.13.1"
+  },
+  "volta": {
+    "node": "18.12.1",
+    "yarn": "1.22.19"
   }
 }

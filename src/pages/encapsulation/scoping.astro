@@ -1,0 +1,37 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Scoping',
+  href: '/encapsulation/scoping',
+};
+---
+
+<SlideLayout
+  title="Encapsulation"
+  subtitle="Private fields"
+>
+  <Article
+    navigation={NAVIGATION}
+  >
+    <p>An easier approach to protecting fields could be using function scoping.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+const makePerson = (name: string, surname: string, money: number) => {
+    return {
+      getFullName: () => \`\${name} \${surname}\`,
+      getMoney: () => money,
+    };
+  };
+
+  const person = makePerson('John', 'Doe', 199);
+  // person... // only getFullName and getMoney are available
+    `}
+    />
+  </Article>
+</SlideLayout>

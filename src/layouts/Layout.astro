@@ -1,6 +1,8 @@
 ---
+import '@/styles/reset.css';
+
 export interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
@@ -8,28 +10,72 @@ const { title } = Astro.props;
 
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Recursive:slnt,wght,CASL,CRSV,MONO@-15..0,300..1000,0..1,0..1,0..1&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main>
+      <slot />
+    </main>
+  </body>
 </html>
 <style is:global>
-	:root {
-		--accent: 124, 58, 237;
-		--accent-gradient: linear-gradient(45deg, rgb(var(--accent)), #da62c4 30%, white 60%);
-	}
-	html {
-		font-family: system-ui, sans-serif;
-		background-color: #F6F6F6;
-	}
-	code {
-		font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-			Bitstream Vera Sans Mono, Courier New, monospace;
-	}
+  /**
+	 * CSS VARS
+	*/
+  :root {
+    --white: #fff;
+    --lighter: #f8fafb;
+    --dark-gray: #718894;
+    --light-gray: #afc4d0;
+    --lighter-gray: #afc4d0;
+    --blue: #1273eb;
+    --dark-blue: #0161cd;
+    --dark: #374957;
+    --darker: #1d262d;
+  }
+
+  /**
+   * GLOBAL STYLES
+  */
+  body {
+    font-family: 'Recursive', monospace;
+    color: var(--darker);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    background: var(--lighter);
+    padding: clamp(1rem, calc(0.5rem + 3vw), 4rem);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  *:focus-visible {
+    outline: 1px solid var(--blue);
+  }
+</style>
+
+<style>
+  main {
+    width: 100%;
+    max-width: 84rem;
+    background: var(--white);
+    padding: clamp(1rem, calc(1rem + 2vw), 4rem);
+    border-radius: 8px;
+    filter: drop-shadow(rgba(0, 0, 0, 0.05) 0.5px 1px 1px)
+      drop-shadow(rgba(0, 0, 0, 0.05) 1px 2px 2px)
+      drop-shadow(rgba(0, 0, 0, 0.05) 2px 4px 4px)
+      drop-shadow(rgba(0, 0, 0, 0.05) 4px 8px 8px)
+      drop-shadow(rgba(0, 0, 0, 0.05) 8px 16px 16px);
+  }
 </style>

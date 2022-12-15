@@ -1,0 +1,62 @@
+---
+import SlideLayout from '@/layouts/SlideLayout.astro';
+import Article from '@/components/Article.astro';
+import { Code } from 'astro/components';
+
+const NAVIGATION = {
+  title: 'Using immer',
+  href: '/immutability/using-immer',
+};
+---
+
+<SlideLayout title="Immutability" subtitle="Handling deep modifications">
+  <Article navigation={NAVIGATION}>
+    <p>Modifying nested structures may become a pain.</p>
+    <p>Using <code>Readonly</code> prevents mutations at top level.</p>
+    <Code
+      lang="ts"
+      theme="material-palenight"
+      wrap
+      code={`
+interface House {
+    dimensions: {
+        width: number;
+        length: number;
+    };
+    material: {
+        name: string;
+        sku: Readonly<{
+            country: string;
+            code: string;
+        }>
+    };
+    rooms: string[];
+};
+
+const apartment: Readonly<House> = {
+    dimensions: {
+        width: 6,
+        length: 10
+    },
+    material: {
+        name: 'brick',
+        sku: {
+            country: 'ES',
+            code: '123-AB-23467'
+        },
+    },
+    rooms: ['Living', 'Walk-in Closet', 'Bedroom', 'WC']
+};
+
+const luxuryApartment: Readonly<House> = {
+    ...apartment,
+    dimensions: {
+        ...apartment.dimensions,
+        width: 8,
+    },
+    rooms: [...apartment.rooms, 'Kitchen'],
+};
+    `}
+    />
+  </Article>
+</SlideLayout>
